@@ -38,7 +38,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [Click here](https://github.com/Antonio0402/social-media-dashboard-with-theme-switcher)
-- Live Site URL: [Click here](https://social-media-dashboard-react-bootstrap.netlify.app/)
+- Live Site URL: [Click here](https://social-media-dashboard-reactbootstrap.netlify.app/)
 
 ## My process
 
