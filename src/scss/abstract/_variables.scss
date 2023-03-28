@@ -1,0 +1,43 @@
+@use '../vendor' as *;
+
+:root {
+  --fs-800: 3.625rem; /* 58px tracking: -0.06em */
+  --fs-700: 2rem; /* 32px */
+  --fs-600: 1.75rem; /* 28px */
+  --fs-500: 1.5rem; /* 24px */
+  --fs-400: 0.875rem; /* 14px tracking: 0.15em*/
+  --fs-300: 0.8125rem; /* 13px tracking: -0.02em */
+  --fs-200: 0.75rem; /* 12px */
+}
+
+$custom-text: (
+  "xs": (
+    "font-size":  fs-200,
+  ),
+  "sm": (
+    "font-size": fs-300,
+    "letter-spacing": $tight
+  ),
+  "base": (
+    "font-size": fs-400,
+  ),
+  "lg": (
+    "font-size": fs-500,
+  ),
+  "xl": (
+    "font-size": fs-600,
+  ),
+  "2xl": (
+    "font-size": fs-700,
+    "line-height": $line-height-sm,
+  ),
+  "3xl": (
+    "font-size": fs-800,
+    "line-height": 1,
+    "letter-spacing": $tighter,
+  ),
+  "follower": (
+    "font-size": fs-400,
+    "letter-spacing": $widest,
+  ),
+);

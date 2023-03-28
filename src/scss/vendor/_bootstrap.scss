@@ -1,0 +1,254 @@
+@use "sass:map";
+
+// 1. Include functions first (manipulate colors, SVGs, calc, etc)
+@import "~bootstrap/scss/functions";
+
+// Toggle global options
+$enable-gradients: true;
+$enable-shadows: true;
+$enable-negative-margins: true;
+// $enable-grid-classes: false;
+// $enable-cssgrid: true;
+
+/* Theme colors */
+$lime-green: #1db489;
+$bright-red: #dc414c;
+
+$facebook: #198ff5;
+$twitter: #1ca0f2;
+$instagram: linear-gradient(
+  225deg,
+  rgb(223, 73, 150),
+  hsl(5, 77%, 71%) 50.91%,
+  rgb(253, 196, 104) 100%
+);
+$youtube: #c4032a;
+
+/* Default colors */
+$primary: $lime-green;
+$secondary: $bright-red;
+$success: #198754;
+$info: #0dcaf0;
+$warning: #ffc107;
+$danger: #dc3545;
+$dark: #1e202a;
+$light: #ffffff;
+
+/* Neutral colors */
+$fill: #ffffff;
+$top-fill: #f5f7ff;
+$card: #f0f2fa;
+$text: #63687e;
+$text-900: #1e202a;
+
+/* Dark mode */
+$fill-dark: #1e202a;
+$top-fill-dark: #1f212e;
+$card-dark: #252a41;
+$text-dark: #8b97c6;
+$text-900-dark: #ffffff;
+
+$custom-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "facebook": $facebook,
+  "twitter": $twitter,
+  "youtube": $youtube,
+  "light": $light,
+  "dark": $dark,
+  "fill": $fill,
+  "top-fill": $top-fill,
+  "card": $card,
+  "text": $text,
+  "text-900": $text-900,
+);
+
+$custom-colors-dark: (
+  "fill": $fill-dark,
+  "top-fill": $top-fill-dark,
+  "card": $card-dark,
+  "text": $text-dark,
+  "text-900": $text-900-dark,
+);
+
+/* Gradient */
+$custom-gradient: (
+  "instagram": $instagram,
+  "toggle": var(--toggle),
+);
+
+/* Spacing */
+$custom-spacer: 1rem;
+$custom-spacers: ();
+@for $i from 0 through 40 {
+  $space: 0.25 * $i;
+  $custom-spacers: map-merge(
+    $custom-spacers,
+    (
+      $i: $custom-spacer * $space,
+    )
+  );
+}
+
+/* Border */
+$custom-border-widths: (
+  1: 1px,
+  2: 2px,
+  3: 3px,
+  4: 4px,
+  5: 5px,
+  8: 8px,
+);
+
+/* Tracking */
+$tight: -0.02em;
+$tighter: -0.06em;
+$normal: 0;
+$wide: 0.15em;
+$widest: 0.25em;
+
+$tracking: (
+  "tight": $tight,
+  "tighter": $tighter,
+  "normal": $normal,
+  "wide": $wide,
+  "widest": $widest,
+) !default;
+
+// 2. Include any default variable overrides
+$font-family-base: var(--font-sans);
+$theme-colors: $custom-colors;
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+
+// 4. Include any default map overrides here
+$spacer: $custom-spacer;
+$spacers: $custom-spacers;
+$border-widths: $custom-border-widths;
+
+// 5. Include remainder of required parts
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+
+// 6. Optionally include any other parts as needed
+@import "~bootstrap/scss/utilities";
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "gradient":
+      map-merge(
+        map-get($utilities, "gradient"),
+        (
+          value:
+            map-merge(
+              map-get(map-get($utilities, "gradient"), "values"),
+              ($custom-gradient)
+            ),
+        )
+      ),
+    "letter-spacing": (
+      property: letter-spacing,
+      class: tracking,
+      css-var: true,
+      css-variable-name: tracking,
+      responsive: true,
+      values: $tracking,
+    ),
+    "cursor": (
+      property: cursor,
+      class: cursor,
+      responsive: true,
+      values: auto pointer grab,
+    ),
+  )
+);
+
+/* Turn on state modifier */
+$utilities: map-merge(
+  $utilities,
+  (
+    "color":
+      map-merge(
+        map-get($utilities, "color"),
+        (
+          state: hover,
+        )
+      ),
+    "gradient":
+      map-merge(
+        map-get($utilities, "gradient"),
+        (
+          state: hover,
+        )
+      ),
+    "opacity":
+      map-merge(
+        map-get($utilities, "opacity"),
+        (
+          state: hover,
+        )
+      ),
+    "font-size":
+      map-merge(
+        map-get($utilities, "font-size"),
+        (
+          responsive: true,
+        )
+      ),
+  )
+);
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "~bootstrap/scss/utilities/api";
+
+// 8. Add additional custom code
+:root {
+  /* Font family */
+  --font-sans: "Inter", sans-serif;
+  --toggle: #aeb3cb;
+  --card-hover: #e0e4f0;
+
+  /* Dark mode */
+  @include color-mode(dark) {
+    --toggle: linear-gradient(
+      225deg,
+      rgb(55, 143, 230) 0%,
+      rgb(62, 218, 130) 98%
+    );
+
+    @each $key, $val in $custom-colors-dark {
+      --#{$prefix}#{$key}: #{$val};
+      --#{$prefix}#{$key}-rgb: #{to-rgb($val)};
+      --#{$prefix}#{$key}-bg-subtle: #{$val};
+      --#{$prefix}#{$key}-border-subtle: #{$val};
+      --#{$prefix}#{$key}-text: #{$val};
+    }
+  }
+
+  @include color-scheme(dark) {
+    --toggle: linear-gradient(
+      225deg,
+      rgb(55, 143, 230) 0%,
+      rgb(62, 218, 130) 98%
+    );
+
+    @each $key, $val in $custom-colors-dark {
+      --#{$prefix}#{$key}: #{$val};
+      --#{$prefix}#{$key}-rgb: #{to-rgb($val)};
+      --#{$prefix}#{$key}-bg-subtle: #{$val};
+      --#{$prefix}#{$key}-border-subtle: #{$val};
+      --#{$prefix}#{$key}-text: #{$val};
+    }
+  }
+}
+
+// Import all of Bootstrap's CSS
+@import "~bootstrap/scss/bootstrap";
